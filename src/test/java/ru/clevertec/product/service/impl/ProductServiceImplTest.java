@@ -77,6 +77,7 @@ class ProductServiceImplTest {
                 .build().buildInfoProductDTO());
         when(productRepository.findAll())
                 .thenReturn(List.of(product, ProductTestData.builder()
+                        .withUuid(ProductTestData.UUID_SECOND)
                         .withNAME(ProductTestData.OTHER_NAME)
                         .build().buildProduct()));
         when(mapper.toInfoProductDto(product))

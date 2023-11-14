@@ -16,6 +16,8 @@ public class ProductTestData {
 
     public static final UUID UUID = java.util.UUID.fromString("e69ce31b-8266-409d-88ab-1141ebdb61e9");
     public static final String OTHER_NAME = "Other name";
+    public static final UUID UUID_SECOND = java.util.UUID.fromString("1013b8f8-5291-490e-b506-83da820c67ed");
+    public static final UUID UUID_THIRD = java.util.UUID.fromString("d850cf11-3241-4a9b-9055-e684117ee39b");
 
     @Builder.Default
     private UUID uuid = UUID;
