@@ -1,9 +1,11 @@
 package ru.clevertec.product.mapper;
 
+import org.mapstruct.Mapper;
 import ru.clevertec.product.data.InfoProductDto;
 import ru.clevertec.product.data.ProductDto;
 import ru.clevertec.product.entity.Product;
 
+@Mapper
 public interface ProductMapper {
 
     /**

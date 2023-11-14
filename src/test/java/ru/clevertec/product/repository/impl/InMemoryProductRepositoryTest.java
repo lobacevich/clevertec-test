@@ -1,12 +1,15 @@
 package ru.clevertec.product.repository.impl;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import ru.clevertec.product.entity.Product;
 import ru.clevertec.product.repository.ProductRepository;
 import ru.clevertec.product.utils.ProductTestData;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +46,7 @@ class InMemoryProductRepositoryTest {
 //        given
         List<Product> expected = List.of(product, ProductTestData.builder()
                 .withUuid(ProductTestData.UUID_SECOND)
-                .withNAME(ProductTestData.OTHER_NAME)
+                .withName(ProductTestData.OTHER_NAME)
                 .build().buildProduct());
 
 //        when
@@ -67,7 +70,7 @@ class InMemoryProductRepositoryTest {
     void saveShouldUpdateProductAndReturn() {
 //        given
         Product expected = ProductTestData.builder()
-                .withNAME(ProductTestData.OTHER_NAME)
+                .withName(ProductTestData.OTHER_NAME)
                 .build().buildProduct();
 
 //        when
@@ -86,13 +89,17 @@ class InMemoryProductRepositoryTest {
     }
 
 
-    @Test
-    void deleteShouldDeleteByUuid() {
+    @ParameterizedTest
+    @ValueSource(strings = {"e69ce31b-8266-409d-88ab-1141ebdb61e9",
+            "1013b8f8-5291-490e-b506-83da820c67ed"})
+    void deleteShouldDeleteByUuid(String str) {
         //        given
+        UUID uuid = UUID.fromString(str);
+
         //        when
-        repository.delete(ProductTestData.UUID);
+        repository.delete(uuid);
 
         //        then
-        assertTrue(repository.findById(ProductTestData.UUID).isEmpty());
+        assertTrue(repository.findById(uuid).isEmpty());
     }
 }

@@ -73,12 +73,12 @@ class ProductServiceImplTest {
     void getAllShouldGetAllInfoProductDto() {
         //        given
         List<InfoProductDto> expected = List.of(infoProductDto, ProductTestData.builder()
-                .withNAME(ProductTestData.OTHER_NAME)
+                .withName(ProductTestData.OTHER_NAME)
                 .build().buildInfoProductDTO());
         when(productRepository.findAll())
                 .thenReturn(List.of(product, ProductTestData.builder()
                         .withUuid(ProductTestData.UUID_SECOND)
-                        .withNAME(ProductTestData.OTHER_NAME)
+                        .withName(ProductTestData.OTHER_NAME)
                         .build().buildProduct()));
         when(mapper.toInfoProductDto(product))
                 .thenReturn(infoProductDto);

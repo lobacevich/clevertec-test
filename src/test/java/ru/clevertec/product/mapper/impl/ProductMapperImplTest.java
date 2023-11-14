@@ -23,7 +23,7 @@ class ProductMapperImplTest {
         ProductDto dto = ProductTestData.builder().build().buildProductDto();
         Product expected = ProductTestData.builder()
                 .withUuid(null)
-                .withCREATED(LocalDateTime.now())
+                .withCreated(LocalDateTime.now())
                 .build().buildProduct();
 
 //        when
@@ -52,10 +52,10 @@ class ProductMapperImplTest {
     void mergeShouldMergeDtoIntoProduct() {
 //        given
         Product expected = ProductTestData.builder()
-                .withNAME(ProductTestData.OTHER_NAME)
+                .withName(ProductTestData.OTHER_NAME)
                 .build().buildProduct();
         ProductDto dto = ProductTestData.builder()
-                .withNAME(ProductTestData.OTHER_NAME)
+                .withName(ProductTestData.OTHER_NAME)
                 .build().buildProductDto();
 
 //        when

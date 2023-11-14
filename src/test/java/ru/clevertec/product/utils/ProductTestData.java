@@ -23,26 +23,26 @@ public class ProductTestData {
     private UUID uuid = UUID;
 
     @Builder.Default
-    private String NAME = "Same name";
+    private String name = "Same name";
 
     @Builder.Default
-    private String DESCRIPTION = "Same description";
+    private String description = "Same description";
 
     @Builder.Default
-    private BigDecimal PRICE = BigDecimal.TEN;
+    private BigDecimal price = BigDecimal.TEN;
 
     @Builder.Default
-    private LocalDateTime CREATED = LocalDateTime.of(2023, 10, 10, 15, 15, 15);
+    private LocalDateTime created = LocalDateTime.of(2023, 10, 10, 15, 15, 15);
 
     public Product buildProduct() {
-        return new Product(UUID, NAME, DESCRIPTION, PRICE, CREATED);
+        return new Product(uuid, name, description, price, created);
     }
 
     public InfoProductDto buildInfoProductDTO() {
-        return new InfoProductDto(UUID, NAME, DESCRIPTION, PRICE);
+        return new InfoProductDto(uuid, name, description, price);
     }
 
     public ProductDto buildProductDto() {
-        return new ProductDto(NAME, DESCRIPTION, PRICE);
+        return new ProductDto(name, description, price);
     }
 }
