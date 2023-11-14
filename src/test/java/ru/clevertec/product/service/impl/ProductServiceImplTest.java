@@ -13,7 +13,6 @@ import ru.clevertec.product.entity.Product;
 import ru.clevertec.product.exception.ProductNotFoundException;
 import ru.clevertec.product.mapper.ProductMapper;
 import ru.clevertec.product.repository.ProductRepository;
-import ru.clevertec.product.service.ProductService;
 import ru.clevertec.product.utils.ProductTestData;
 
 import java.util.List;
@@ -35,7 +34,7 @@ class ProductServiceImplTest {
     private ProductRepository productRepository;
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Captor
     private ArgumentCaptor<Product> captor;
@@ -72,16 +71,20 @@ class ProductServiceImplTest {
     @Test
     void getAllShouldGetAllInfoProductDto() {
         //        given
-        List<InfoProductDto> expected = List.of(infoProductDto, ProductTestData.builder()
+        Product otherProduct = ProductTestData.builder()
+                .withUuid(ProductTestData.UUID_SECOND)
                 .withName(ProductTestData.OTHER_NAME)
-                .build().buildInfoProductDTO());
+                .build().buildProduct();
+        InfoProductDto otherInfoProductDto = ProductTestData.builder()
+                .withName(ProductTestData.OTHER_NAME)
+                .build().buildInfoProductDTO();
+        List<InfoProductDto> expected = List.of(infoProductDto, otherInfoProductDto);
         when(productRepository.findAll())
-                .thenReturn(List.of(product, ProductTestData.builder()
-                        .withUuid(ProductTestData.UUID_SECOND)
-                        .withName(ProductTestData.OTHER_NAME)
-                        .build().buildProduct()));
+                .thenReturn(List.of(product, otherProduct));
         when(mapper.toInfoProductDto(product))
                 .thenReturn(infoProductDto);
+        when(mapper.toInfoProductDto(otherProduct))
+                .thenReturn(otherInfoProductDto);
 
 //        when
         List<InfoProductDto> actual = productService.getAll();
@@ -93,6 +96,8 @@ class ProductServiceImplTest {
     @Test
     void createShouldSaveProductFromProductDTOReturnUuid() {
         //        given
+        when(mapper.toProduct(productDto))
+                .thenReturn(product);
         when(productRepository.save(product))
                 .thenReturn(product);
 
@@ -110,19 +115,29 @@ class ProductServiceImplTest {
     @Test
     void updateShouldUpdateProductWithUuidFromProductDTO() {
         //        given
-        when(productRepository.save(product))
-                .thenReturn(product);
+        Product otherProduct = ProductTestData.builder()
+                .withName(ProductTestData.OTHER_NAME)
+                .build().buildProduct();
+        ProductDto otherProductDto = ProductTestData.builder()
+                .withName(ProductTestData.OTHER_NAME)
+                .build().buildProductDto();
+        when(productRepository.findById(ProductTestData.UUID))
+                .thenReturn(Optional.of(product));
+        when(mapper.merge(product, otherProductDto))
+                .thenReturn(otherProduct);
+        when(productRepository.save(otherProduct))
+                .thenReturn(otherProduct);
 
 //        when
-        productService.update(ProductTestData.UUID, productDto);
+        productService.update(ProductTestData.UUID, otherProductDto);
 
 //        then
         verify(productRepository).save(captor.capture());
 
         assertEquals(ProductTestData.UUID, captor.getValue().getUuid());
-        assertEquals(productDto.name(), captor.getValue().getName());
-        assertEquals(productDto.description(), captor.getValue().getDescription());
-        assertEquals(productDto.price(), captor.getValue().getPrice());
+        assertEquals(otherProductDto.name(), captor.getValue().getName());
+        assertEquals(otherProductDto.description(), captor.getValue().getDescription());
+        assertEquals(otherProductDto.price(), captor.getValue().getPrice());
     }
 
     @Test
